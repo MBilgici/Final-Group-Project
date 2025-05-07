@@ -2,9 +2,9 @@
 setwd("C:/Users/bilgici/Desktop/New Folder/Project2025")
 
 # 1) install & load packages ------------------------------------------------
-if (!requireNamespace("rMVP",    quietly=TRUE)) install.packages("rMVP")
-if (!requireNamespace("data.table",quietly=TRUE)) install.packages("data.table")
-if (!requireNamespace("bigmemory",quietly=TRUE)) install.packages("bigmemory")
+install.packages("rMVP")
+install.packages("data.table")
+install.packages("bigmemory")
 
 library(rMVP)       # GWAS pipeline (GLM, MLM, FarmCPU)
 library(data.table) # fast fread/fwrite
