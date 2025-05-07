@@ -1,0 +1,80 @@
+# 0) set working directory -------------------------------------------------
+setwd("C:/Users/bilgici/Desktop/New Folder/Project2025")
+
+# 1) install & load packages ------------------------------------------------
+if (!requireNamespace("rMVP",    quietly=TRUE)) install.packages("rMVP")
+if (!requireNamespace("data.table",quietly=TRUE)) install.packages("data.table")
+if (!requireNamespace("bigmemory",quietly=TRUE)) install.packages("bigmemory")
+
+library(rMVP)       # GWAS pipeline (GLM, MLM, FarmCPU)
+library(data.table) # fast fread/fwrite
+library(bigmemory)  # for big.matrix attachments
+
+# 2) patch HapMap header (rs → rs#) -----------------------------------------
+lines <- readLines("genotype_data.txt")
+lines[1] <- sub("^(rs)(\t)", "rs#\\2", lines[1])
+writeLines(lines, "genotype_data_fixed.hmp.txt")
+
+# 3) filter to biallelic SNPs only ------------------------------------------
+#    keeps only rows where alleles are two single bases separated by a slash
+hap <- fread("genotype_data_fixed.hmp.txt", data.table=FALSE)
+biallelic <- hap[
+  sapply(gregexpr("/", hap$alleles), function(x) sum(x>0)) == 1 &
+    sapply(strsplit(hap$alleles, "/"), function(a) all(nchar(a)==1)),
+]
+cat(sprintf("Kept %d biallelic SNPs (removed %d multi-allelic)\n",
+            nrow(biallelic), nrow(hap) - nrow(biallelic)))
+write.table(
+  biallelic,
+  file     = "genotype_data_biallelic.hmp.txt",
+  sep      = "\t",
+  quote    = FALSE,
+  row.names= FALSE,
+  col.names= TRUE
+)
+
+# 4) ensure rMVP log/output folder exists ----------------------------------
+if (!dir.exists("rMVP_results")) dir.create("rMVP_results")
+
+# 5) prepare all data for GWAS in one go -----------------------------------
+MVP.Data(
+  fileHMP    = "genotype_data_biallelic.hmp.txt",  # filtered HapMap
+  filePhe    = "HMF_BLUES.csv",                   # your PI,HMF_BLUES CSV
+  sep.phe    = ",",                               # tell it to split on commas
+  fileKin    = TRUE,                              # compute kinship
+  filePC     = TRUE,                              # compute PCs
+  SNP.impute = "Major",                           # major allele imputation
+  out        = "GWAS"                             # prefixes: GWAS.*
+)
+
+# 6) load in‐memory objects -----------------------------------------------
+# read the map & phenotype tables
+map <- read.table("GWAS.geno.map", header=TRUE, sep="\t", stringsAsFactors=FALSE)
+phe <- read.table("GWAS.phe",     header=TRUE, sep="\t", stringsAsFactors=FALSE)
+
+# attach the bigmemory descriptors
+geno <- attach.big.matrix("GWAS.geno.desc")
+K    <- attach.big.matrix("GWAS.kin.desc")
+PC   <- attach.big.matrix("GWAS.pc.desc")
+
+# 7) run FarmCPU + MLM ------------------------------------------------------
+imMVP <- MVP(
+  phe         = phe,                # data.frame: Taxa + HMF_BLUES
+  geno        = geno,               # big.matrix of genotypes
+  map         = map,                # data.frame: SNP, Chr, Pos
+  K           = K,                  # big.matrix kinship
+  CV.GLM      = PC,                 # big.matrix PCs for GLM
+  CV.MLM      = PC,                 # big.matrix PCs for MLM
+  CV.FarmCPU  = PC,                 # big.matrix PCs for FarmCPU
+  method      = c("FarmCPU","MLM"), # run both models
+  nPC.GLM     = 0,                  # already in CV.GLM
+  nPC.MLM     = 0,
+  nPC.FarmCPU = 0,
+  file.output = TRUE,
+  outpath     = "rMVP_results"
+)
+
+# End of script. Check rMVP_results/ for:
+#   - rMVP_results.FarmCPU.GWAS.Results.csv
+#   - rMVP_results.MLM.GWAS.Results.csv
+#   - Manhattan & QQ plot PDFs
