@@ -10,7 +10,6 @@ Our target is to reproduce and validate the GWAS analyses presented in the orgin
 1-README.md
 2-Fakude et al., 2025.md (Summary and analysis of the original (Fakude et al., 2025) paper)
 3-R code (R scripts and RMarkdown for data processing and analysis)
-gwas_hff_hmf_analysis.Rmd
 4-data data sources
 5-Our results output (Generated plots, summary tables, and annotations) GWAS
 
