@@ -15,7 +15,13 @@ gwas_hff_hmf_analysis.Rmd
 5-Our results output (Generated plots, summary tables, and annotations) GWAS
 
 ## When we reproduced the original paper and follewed the below steps
-
+Install & load everything you need
+Read your HFF & HMF CSVs, compute binomial‐GLM BLUES for each
+Merge those into one phenotype file
+Patch & filter your HapMap to biallelic SNPs
+Run rMVP (FarmCPU & MLM) on both traits at once
+Produce Manhattan & QQ plots for each trait
+Extract genome‐wide significant SNPs and annotate HMF hits via Ensembl Plants
 ### Requirements
 R and R studio Software
 Data from Original Paper (you can find our github also)
