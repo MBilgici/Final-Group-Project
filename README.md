@@ -392,3 +392,4 @@ cat("Entry-Mean Heritability (H²):", heritability, "\n")
 - Manhattan and QQ plots
 - Gene annotations of significant SNPs
 
+## Results for graphs and images
