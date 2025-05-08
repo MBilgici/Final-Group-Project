@@ -1,4 +1,4 @@
-# Course of BCB546-Spring2025 Final Group Project: Replication for GWAS Haploid Fertility in Maize
+# Course of BCB546-Spring2025 Final Group Project: reproduced for GWAS Haploid Fertility in Maize
 We used this title paper "Genome‑wide association study of haploid female fertility (HFF) and haploid male fertility (HMF) in BS39‑derived doubled haploid maize lines" (Fakude et al., 2025)
 Fakude, M., Murithi, A., Frei, U. K., Scott, P. M., & Lübberstedt, T. (2025). Genome-wide association study of haploid female fertility (HFF) and haploid male fertility (HMF) in BS39-derived doubled haploid maize lines. Theoretical and Applied Genetics, 138(1), 1-14.
 ## Overview
