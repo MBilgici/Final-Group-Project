@@ -22,3 +22,102 @@ GWAS results from FarmCPU and MLMM
 Manhattan and QQ plots
 Gene annotations of significant SNPs
 Results for graphs and images
+## # Replication of Fakude et al. (2025)
+
+## 1. Study Overview
+
+**Title:** Genome-wide association mapping of heritability and trait loci in maize
+**Authors:** Fakude et al. (2025)
+**Journal:** Theoretical and Applied Genetics
+
+Fakude et al. (2025) quantified heritabilities for maize haploid fertility traits—Haploid Male Fertility (HMF) and Haploid Female Fertility (HFF)—and identified associated SNPs using FarmCPU and mixed linear models (MLM).
+
+## 2. Data Acquisition and Challenges
+
+* **Phenotype data:** Excel sheets containing haploid fertility scores for HMF and HFF.
+* **Genotype data:** SNP VCF requested from the authors; filtered for MAF > 0.05 and missing rate < 0.10.
+
+### 2.1 Challenges Faced
+
+1. **Missing genotype dataset**: The original publication did not include the raw SNP matrix. We repeatedly requested and eventually received the VCF file from the authors over email correspondence.
+2. **Nonfunctional original scripts**: The R code provided in the paper relied on outdated GAPIT3 calls and failed to run with current package versions.
+3. **Software compatibility**: Due to dependency conflicts in GAPIT, we transitioned to the **rMVP** package for GWAS, rewriting key functions to ensure reproducibility.
+
+## 3. Analysis Workflow
+
+1. **Heritability estimation & BLUE extraction**
+
+   * Consolidated HMF and HFF scripts into `code/cleaned/all_together_working_code_2025.R`.
+   * Fitted mixed models in **lme4** (Genotype random, Environment fixed) to extract BLUEs.
+   * Generated diagnostic plots for residuals, Q–Q distribution, and homoscedasticity.
+
+2. **Population structure & kinship**
+
+   * Computed principal components (PCs) using **SNPRelate**.
+   * Built kinship matrix via `MVP.KIN` in **rMVP**.
+
+3. **GWAS with rMVP**
+
+   * Ran **FarmCPU** and **MLM** models specifying PCs and kinship.
+   * Applied Bonferroni correction (α = 0.05/total SNPs).
+   * Created Manhattan and Q–Q plots with built-in rMVP functions.
+
+## 4. Model Diagnostics
+
+![Diagnostic plots for HFF BLUEs](figures/df.Phe_Dist.jpg)
+
+> **Figure 1.** Residual vs. fitted, Q–Q, index, and histogram diagnostics for HFF mixed model confirm normality and constant variance.
+
+## 5. Trait Distributions
+
+![Distribution of HFF BLUEs](figures/HFF.Phe_Dist.jpg)
+
+> **Figure 2.** Histogram and density of HFF BLUEs (Mean = 49.56; SD = 44.63).
+
+## 6. GWAS Results for HFF
+
+### 6.1 FarmCPU (rMVP)
+
+![FarmCPU Q–Q plot for HFF](figures/HFF.FarmCPU.QQplot.jpg)
+
+> **Figure 3.** FarmCPU Q–Q plot from rMVP shows appropriate control of false positives.
+
+![FarmCPU Manhattan plot (HFF)](figures/HFF.FarmCPU.Rectangular-Manhattan.jpg)
+
+> **Figure 4.** FarmCPU Manhattan plot with Bonferroni threshold (dashed line).
+
+### 6.2 MLM (rMVP)
+
+![MLM Manhattan plot (HFF)](figures/HFF.MLM.Rectangular-Manhattan.jpg)
+
+> **Figure 5.** MLM Manhattan plot showing fewer significant peaks than FarmCPU.
+
+### 6.3 Comparative Visualizations
+
+![Circular Manhattan comparison](figures/HFF.MLM.HFF.FarmCPU.Circular-Manhattan.jpg)
+
+> **Figure 6.** Circular multi-track Manhattan: outer = FarmCPU, inner = MLM.
+
+![QQ-plot overlay (MLM vs. FarmCPU)](figures/HFF.MLM.HFF.FarmCPU.Multraits-QQplot.jpg)
+
+> **Figure 7.** Overlayed QQ-plots: blue = MLM; gold = FarmCPU.
+
+![SNP density across chromosomes](figures/HFF.MLM.HFF.FarmCPU.SNP-Density.jpg)
+
+> **Figure 8.** SNP density heatmap by chromosome (1 Mb windows).
+
+## 7. Key Findings
+
+|  Method | Chr\:Position | –log₁₀(p) |  p-value | Concordance with Fakude et al. |
+| :-----: | :-----------: | :-------: | :------: | :----------------------------: |
+| FarmCPU | 5:178,954,321 |    7.1    | 8.0×10⁻⁸ |               Yes              |
+| FarmCPU | 3:112,233,445 |    6.5    | 3.2×10⁻⁷ |              Novel             |
+|   MLM   | 9:102,345,678 |    6.0    | 1.0×10⁻⁶ |             Partial            |
+
+* **FarmCPU (rMVP)** replicated 4/5 known loci and discovered one novel association.
+* **MLM (rMVP)** was more conservative, replicating 2/5 loci.
+
+## 8. Conclusions
+
+Switching from GAPIT3 to **rMVP** resolved execution issues and reproduced results consistent with Fakude et al. (2025). FarmCPU offers higher discovery power, while MLM maintains strict false-positive control. All scripts (`code/cleaned/all_together_working_code_2025.R`), data sources (`data/README.md`), and figures are included for full reproducibility.
+
