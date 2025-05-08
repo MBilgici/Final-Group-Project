@@ -35,11 +35,11 @@ Fakude et al. (2025) quantified heritabilities for maize haploid fertility trait
 ## 2. Data Acquisition and Challenges
 
 * **Phenotype data:** Excel sheets containing haploid fertility scores for HMF and HFF.
-* **Genotype data:** SNP VCF requested from the authors; filtered for MAF > 0.05 and missing rate < 0.10.
+* **Genotype data:** genotyped data (SNP) requested from the authors Fakude et al.,2025; filtered for MAF > 0.05 and missing rate < 0.10.
 
 ### 2.1 Challenges Faced
 
-1. **Missing genotype dataset**: The original publication did not include the raw SNP matrix. We repeatedly requested and eventually received the VCF file from the authors over email correspondence.
+1. **Missing genotype dataset**: The original publication did not include the raw genotypes data (SNP matrix). We requested and received the genotype data file from the authors over email correspondence.
 2. **Nonfunctional original scripts**: The R code provided in the paper relied on outdated GAPIT3 calls and failed to run with current package versions.
 3. **Software compatibility**: Due to dependency conflicts in GAPIT, we transitioned to the **rMVP** package for GWAS, rewriting key functions to ensure reproducibility.
 
