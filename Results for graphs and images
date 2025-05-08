@@ -1,3 +1,27 @@
+# Results: Graphs and Images from rMVP Analysis
+
+This folder contains all the visual outputs generated from the `rMVP` GWAS analysis conducted in 2025. 
+These include:
+
+- Manhattan plots
+- QQ plots
+- Phenotypic distribution graphs
+- Heatmaps
+- Other result figures
+
+### File Naming Convention
+
+Each image corresponds to a specific trait or analysis step, named accordingly.  
+For example:
+- `Manhattan_TraitName.png` – Manhattan plot for a specific trait
+- `QQ_TraitName.png` – QQ plot for that trait
+- `Phenotype_Distribution_TraitName.png` – Histogram of phenotypic data
+
+
+These outputs were used in the final group project for GWAS interpretation and result visualization.
+
+
+
 ======================== Welcome to MVP =========================
     an R package for Memory-efficient, Visualization-enhanced    
      and Parallel-accelerated genome-wide association study      
