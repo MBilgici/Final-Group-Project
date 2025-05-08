@@ -1,10 +1,9 @@
 ---
 title: "GroupProject2025"
-author: "Memis Bilgici"
+author: "Memis Bilgici-Nazmul Hossain-Ramesh Chethri"
 date: "2025-05-08"
 output: pdf_document
 ---
-## R Markdown
 
 setwd("C:/Users/bilgici/Desktop/New Folder/2025")
 
