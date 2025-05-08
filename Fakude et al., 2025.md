@@ -108,11 +108,11 @@ Fakude et al. (2025) quantified heritabilities for maize haploid fertility trait
 
 ## 7. Key Findings
 
-|  Method | Chr\:Position | –log₁₀(p) |  p-value | Concordance with Fakude et al. |
-| :-----: | :-----------: | :-------: | :------: | :----------------------------: |
-| FarmCPU | 5:178,954,321 |    7.1    | 8.0×10⁻⁸ |               Yes              |
-| FarmCPU | 3:112,233,445 |    6.5    | 3.2×10⁻⁷ |              Novel             |
-|   MLM   | 9:102,345,678 |    6.0    | 1.0×10⁻⁶ |             Partial            |
+|  Method               | Trait |    Chromosome | –log₁₀(p) |  p-value | Concordance with Fakude et al. |
+
+| Original Paper GAPIT  | HFF   |    4-5-10     |    7.1    | 8.0×10⁻⁸ |               Yes              |
+| OUr FarmCPU/MLM       | HFF   |1-2-5-10       |    6.5    | 3.2×10⁻⁷ |              Partial           |
+
 
 * **FarmCPU (rMVP)** replicated 4/5 known loci and discovered one novel association.
 * **MLM (rMVP)** was more conservative, replicating 2/5 loci.
