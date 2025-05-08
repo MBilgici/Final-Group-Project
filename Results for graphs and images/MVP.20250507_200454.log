@@ -1,0 +1,62 @@
+======================== Welcome to MVP =========================
+    an R package for Memory-efficient, Visualization-enhanced    
+     and Parallel-accelerated genome-wide association study      
+                      __  __  __   __  ___                       
+                     |  \/  | \ \ / / | _ \                      
+                     | |\/| |  \ V /  |  _/                      
+                     |_|  |_|   \_/   |_|        Version: 1.4.0  
+  Design & Maintain: Lilin Yin, Haohao Zhang, and Xiaolei Liu    
+  Contributors: Zhenshuang Tang, Jingya Xu, Dong Yin, Zhiwu      
+  Zhang, Xiaohui Yuan, Mengjin Zhu, Shuhong Zhao, Xinyun Li      
+  Mailto: xiaoleiliu@mail.hzau.edu.cn, ylilin@mail.hzau.edu.cn   
+=================================================================
+Start: 2025-05-07 20:04:54 CDT 
+The log has been output to the file: rMVP_results/MVP.20250507_200454.log 
+Input data has 188 individuals and 463953 markers 
+Markers are detected to be stored by column 
+Analyzed trait: HFF 
+Number of threads used: 16 
+No high performance math library detected! The computational efficiency would be greatly reduced
+Calculate allele frequency... 
+Eigen Decomposition on GRM 
+Number of provided covariates of MLM: 5 
+Number of provided covariates of FarmCPU: 5 
+-------------------------GWAS Start------------------------- 
+Mixed Linear Model (MLM) Start... 
+Variance components using: BRENT 
+Estimated Vg and Ve: 0.055315 722.509484 
+scanning...
+Genomic inflation factor (lambda): 1.0594 
+Writing results to local file 
+FarmCPU Start... 
+Current loop: 1 out of maximum of 10 
+seqQTN: 
+NULL 
+number of covariates in current loop is: 
+5 
+scanning... 
+Current loop: 2 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+Top snps have little effect, set seqQTN to NULL! 
+Genomic inflation factor (lambda): 1.0564 
+Writing results to local file 
+Significant level: 1.08e-07 
+---------------------Visualization Start-------------------- 
+Phenotype distribution Plotting 
+SNP_Density Plotting 
+Circular_Manhattan Plotting HFF.MLM 
+Circular_Manhattan Plotting HFF.FarmCPU 
+Rectangular_Manhattan Plotting HFF.MLM 
+Rectangular_Manhattan Plotting HFF.FarmCPU 
+Q_Q Plotting HFF.MLM 
+Q_Q Plotting HFF.FarmCPU 
+Multracks_Rectangular Plotting HFF.MLM 
+Multracks_Rectangular Plotting HFF.FarmCPU 
+Multracks_QQ Plotting HFF.MLM 
+Multracks_QQ Plotting HFF.FarmCPU 
+Multraits_QQ Plotting HFF.MLM 
+Multraits_QQ Plotting HFF.FarmCPU 
+Results are stored at Working Directory: rMVP_results 
+End: 2025-05-07 20:08:42 CDT 
+Total running time: 3m48s 
+===================== MVP ACCOMPLISHED ===================== 
