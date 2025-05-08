@@ -1,1 +1,118 @@
-
+======================== Welcome to MVP =========================
+    an R package for Memory-efficient, Visualization-enhanced    
+     and Parallel-accelerated genome-wide association study      
+                      __  __  __   __  ___                       
+                     |  \/  | \ \ / / | _ \                      
+                     | |\/| |  \ V /  |  _/                      
+                     |_|  |_|   \_/   |_|        Version: 1.4.0  
+  Design & Maintain: Lilin Yin, Haohao Zhang, and Xiaolei Liu    
+  Contributors: Zhenshuang Tang, Jingya Xu, Dong Yin, Zhiwu      
+  Zhang, Xiaohui Yuan, Mengjin Zhu, Shuhong Zhao, Xinyun Li      
+  Mailto: xiaoleiliu@mail.hzau.edu.cn, ylilin@mail.hzau.edu.cn   
+=================================================================
+Start: 2025-05-07 21:49:53 CDT 
+The log has been output to the file: rMVP_results/MVP.20250507_214953.log 
+Input data has 188 individuals and 463953 markers 
+Markers are detected to be stored by column 
+Analyzed trait: HFF 
+Number of threads used: 16 
+No high performance math library detected! The computational efficiency would be greatly reduced
+Calculate allele frequency... 
+Eigen Decomposition on GRM 
+Number of provided covariates of MLM: 5 
+Number of provided covariates of FarmCPU: 5 
+-------------------------GWAS Start------------------------- 
+Mixed Linear Model (MLM) Start... 
+Variance components using: BRENT 
+Estimated Vg and Ve: 0.096477 1459.304457 
+scanning...
+Genomic inflation factor (lambda): 0.7155 
+Writing results to local file 
+FarmCPU Start... 
+Current loop: 1 out of maximum of 10 
+seqQTN: 
+NULL 
+number of covariates in current loop is: 
+5 
+scanning... 
+Current loop: 2 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+seqQTN: 
+50969 277701 176505 
+number of covariates in current loop is: 
+8 
+scanning... 
+Current loop: 3 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+seqQTN: 
+226255 359288 50969 277701 176505 
+number of covariates in current loop is: 
+10 
+scanning... 
+Current loop: 4 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+seqQTN: 
+3397 421659 226255 374436 358814 4534 458626 433726 366204 50969 277701 359288 176505 
+number of covariates in current loop is: 
+18 
+scanning... 
+Current loop: 5 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+seqQTN: 
+359288 226255 421659 277701 4534 3397 374436 388621 176505 458626 358814 366204 50969 433726 
+number of covariates in current loop is: 
+19 
+scanning... 
+Current loop: 6 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+seqQTN: 
+359288 226255 421659 277701 388621 4534 3397 374436 116343 176505 458626 366204 358814 433726 50969 
+number of covariates in current loop is: 
+20 
+scanning... 
+Current loop: 7 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+seqQTN: 
+359288 226255 388621 421659 277701 116343 4534 3397 374436 176505 458626 358814 366204 50969 433726 
+number of covariates in current loop is: 
+20 
+scanning... 
+Genomic inflation factor (lambda): 0.8117 
+Writing results to local file 
+Significant level: 1.08e-07 
+---------------------Visualization Start-------------------- 
+Phenotype distribution Plotting 
+SNP_Density Plotting 
+Circular_Manhattan Plotting HFF.MLM 
+Circular_Manhattan Plotting HFF.FarmCPU 
+Rectangular_Manhattan Plotting HFF.MLM 
+Rectangular_Manhattan Plotting HFF.FarmCPU 
+Q_Q Plotting HFF.MLM 
+Q_Q Plotting HFF.FarmCPU 
+Multracks_Rectangular Plotting HFF.MLM 
+Multracks_Rectangular Plotting HFF.FarmCPU 
+Multracks_QQ Plotting HFF.MLM 
+Multracks_QQ Plotting HFF.FarmCPU 
+Multraits_QQ Plotting HFF.MLM 
+Multraits_QQ Plotting HFF.FarmCPU 
+Results are stored at Working Directory: rMVP_results 
+End: 2025-05-07 21:54:12 CDT 
+Total running time: 4m19s 
+===================== MVP ACCOMPLISHED ===================== 
+Preparing data for MVP...
+Reading file...
+Writing map into file
+inds: 188	markers: 463953
+Loading genotype at a step of 10000...
+Preparation for GENOTYPE data is done within 12s 
+188 common individuals between phenotype and genotype. 
+Preparation for PHENOTYPE data is Done within 0s 
+Imputing...
+Impute Genotype File is done!
+Computing GRM for 188 individuals using 463953 markers with a step of 10000 
+Deriving relationship matrix successfully 
+Preparation for Kinship matrix is done! 
+Eigen Decomposition on GRM 
+Deriving PCs successfully 
+Preparation for PC matrix is done! 
+MVP data prepration accomplished successfully!
