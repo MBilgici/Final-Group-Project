@@ -1,0 +1,118 @@
+
+setwd("C:/Users/bilgici/Desktop/New Folder/2025")
+
+# 1) install & load packages ------------------------------------------------
+pkgs <- c("lme4","ggResidpanel","dplyr","ggplot2","emmeans","tidyverse",
+          "car","qqman","readxl","rMVP","data.table","bigmemory","arm")
+for(p in pkgs){
+  if(!requireNamespace(p, quietly=TRUE)) install.packages(p)
+  library(p, character.only=TRUE)
+}
+
+# 2) Read & process HMF data, fit GLM, get emmeans (BLUES) ------------------
+da <- read.csv("HFF.csv")
+da$PI   <- as.factor(da$PI)
+da$Rep  <- as.factor(da$Rep)
+da$HFF  <- as.numeric(da$HFF)
+
+# Check distribution if you like
+hist(da$HFF, col="cyan", xlab="Haploid male fertility")
+
+# Aggregate Fertile/Sterile counts by PI × Rep
+da.agg <- da %>%
+  group_by(PI,Rep) %>%
+  summarize(
+    Fertile = sum(Fertile),
+    Sterile = sum(Sterile),
+    .groups="drop"
+  ) %>%
+  mutate(
+    HFF = Fertile/(Fertile+Sterile),
+    HFF.mod = ifelse(HFF==0,
+                     min(HFF[HFF>0])/2,
+                     HFF)
+  )
+
+# Fit binomial GLM
+glm_GWAS <- glm(
+  cbind(Fertile,Sterile) ~ Rep + PI,
+  data = da.agg,
+  family = binomial
+)
+resid_panel(glm_GWAS)
+
+# Extract emmeans on the PI effect and back‐transform to %  
+emm <- emmeans(glm_GWAS, "PI")
+glm_eblues_GWAS <- data.frame(emm)
+glm_eblues_GWAS$HFF <- arm::invlogit(glm_eblues_GWAS$emmean)*100
+
+pheno_rMVP <- glm_eblues_GWAS %>%
+  dplyr::select(Taxa = PI, HFF)
+pheno_rMVP <- glm_eblues_GWAS[, c("PI", "HMF")]
+names(pheno_rMVP) <- c("Taxa", "HFF")
+
+
+
+# write out
+write.csv(pheno_rMVP, "HFF_BLUES.csv", row.names=FALSE, quote=FALSE)
+
+# 3) Patch and filter your genotype HapMap as before ------------------------
+lines <- readLines("genotype_data.txt")
+lines[1] <- sub("^(rs)(\t)", "rs#\\2", lines[1])
+writeLines(lines, "genotype_data_fixed.hmp.txt")
+
+hap <- data.table::fread("genotype_data_fixed.hmp.txt", data.table=FALSE)
+biallelic <- hap[
+  sapply(gregexpr("/", hap$alleles), function(x) sum(x>0)) == 1 &
+    sapply(strsplit(hap$alleles, "/"), function(a) all(nchar(a)==1)),
+]
+cat(sprintf(
+  "Kept %d biallelic SNPs (removed %d multi-allelic)\n",
+  nrow(biallelic), nrow(hap)-nrow(biallelic)
+))
+write.table(
+  biallelic,
+  file = "genotype_data_biallelic.hmp.txt",
+  sep = "\t", quote = FALSE,
+  row.names = FALSE, col.names=TRUE
+)
+
+# 4) Make results folder ---------------------------------------------------
+if(!dir.exists("rMVP_results")) dir.create("rMVP_results")
+
+# 5) Prepare all data for GWAS with rMVP -------------------------------
+MVP.Data(
+  fileHMP    = "genotype_data_biallelic.hmp.txt",
+  filePhe    = "HFF_BLUES.csv",
+  sep.phe    = ",",
+  fileKin    = TRUE,
+  filePC     = TRUE,
+  SNP.impute = "Major",
+  out        = "GWAS"
+)
+
+# 6) Attach matrices -------------------------------------------------------
+map  <- read.table("GWAS.geno.map", header=TRUE, sep="\t", stringsAsFactors=FALSE)
+phe  <- read.table("GWAS.phe",     header=TRUE, sep="\t", stringsAsFactors=FALSE)
+geno <- attach.big.matrix("GWAS.geno.desc")
+K    <- attach.big.matrix("GWAS.kin.desc")
+PC   <- attach.big.matrix("GWAS.pc.desc")
+
+# 7) Run FarmCPU & MLM ------------------------------------------------------
+res <- MVP(
+  phe         = phe,
+  geno        = geno,
+  map         = map,
+  K           = K,
+  CV.GLM      = PC,
+  CV.MLM      = PC,
+  CV.FarmCPU  = PC,
+  method      = c("FarmCPU","MLM"),
+  nPC.GLM     = 0,
+  nPC.MLM     = 0,
+  nPC.FarmCPU = 0,
+  file.output = TRUE,
+  outpath     = "rMVP_results"
+)
+
+# Script complete: check rMVP_results/ for your results.
